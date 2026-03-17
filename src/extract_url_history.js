@@ -280,9 +280,10 @@ class ExtractUrlHistory {
         return new Promise(async (resolve, reject) => {
             try {
                 const currentApplication = activeWindow;
+     
                 if (currentApplication?.owner.path) {
                     if (!browserInformation) {
-                        return activeWindow;
+                        return resolve(activeWindow);
                     }
                     let findApplication;
                     const appDataDirectory = this.getAppDataDirectory();
@@ -325,8 +326,7 @@ class ExtractUrlHistory {
                     }
 
                     if (browserInformation['isShellRun']) {
-                        resolve(this.findUrlFromShellApp(activeWindow, browserInformation));
-                        return;
+                        return resolve(this.findUrlFromShellApp(activeWindow, browserInformation));
                     }
 
                     if (this.createdTemPath.length > 0) {
@@ -340,9 +340,9 @@ class ExtractUrlHistory {
                     this.createdTemPath = [];
 
                     if (findApplication) {
-                        resolve(findApplication);
+                        return resolve(findApplication);
                     } else {
-                        resolve(activeWindow);
+                        return resolve(activeWindow);
                     }
                 }
             }
