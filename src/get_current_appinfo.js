@@ -12,9 +12,9 @@ class GetCurrentApplicationInfo {
             const currentApplication = active_win;
             if (currentApplication?.owner.path) {
                 let getBrowserInformation = checkApplicationBrowser(active_win.owner.name, browserConfigFromFile);
-                resolve(await this.extractUrlHistoryInstance.windowReport(active_win, getBrowserInformation));
+                return resolve(await this.extractUrlHistoryInstance.windowReport(active_win, getBrowserInformation));
             } else {
-                resolve(active_win);
+                return resolve(active_win);
             }
         });
     }
