@@ -4,9 +4,15 @@ const GetActiveWindow = require("./src/get-active-window.js");
 const SetupBrowserJSONData = require("./src/setup_browser_json.js");
 
 const getActiveWindow = async (folderName) => {
-    const get_active_win = new GetActiveWindow(folderName);
-    const result = await get_active_win.getCurrentActiveWindow();
-    return result;
+    return new Promise((resolve, rejects) => {
+        const get_active_win = new GetActiveWindow(folderName);
+        get_active_win.getCurrentActiveWindow().then((result) => {
+            console.log("result", result);
+            return resolve(result)
+        }).catch((error) => {
+            return rejects(error)
+        })
+    })
 }
 
 const setUpJsonBrowserFile = async (browserData, folderName) => {
