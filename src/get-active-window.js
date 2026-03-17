@@ -21,7 +21,6 @@ class GetActiveWindow {
                 if (active_win) {
                     let result = await extract_url_history.getCurrentApplicationInfo(active_win, browserInformationJSON);
                     if (result) {
-                        log(" -- History gets url -- ".green, result);
                         res(result);
                     } else {
                         res(active_win);
@@ -62,8 +61,6 @@ class GetActiveWindow {
         // Checking if browser data is available or not
         if (browserData && browserData['browsers']) {
             const is_browser = checkApplicationBrowser(active_win?.owner.name, browserData); // application is browser or not
-            log("Is application is browser".blue, is_browser);
-            log("\n\n");
             if (!is_browser) {
                 return active_win
             };
@@ -107,18 +104,28 @@ class GetActiveWindow {
 
 
     async getCurrentActiveWindow() {
-        const os_info = checkOsConfiguration();
-        switch (os_info) {
-            case "Linux":
-                return this.getLinuxInfo();
-                break;
-            case "Darwin":
-                return this.getDarwinInfo();
-                break;
-            default:
-                return this.getWindowsInfo(os_info);
-                break;
-        }
+
+        return new Promise((resolve, rejects)=>{
+            const os_info = checkOsConfiguration();
+            switch (os_info) {
+                case "Linux":
+                    return resolve(this.getLinuxInfo()) .catch((error)=>{
+                        return rejects(error)
+                    });
+                    break;
+                case "Darwin":
+                    return resolve(this.getDarwinInfo()) .catch((error)=>{
+                        return rejects(error)
+                    });
+                    break;
+                default:
+                    return resolve(this.getWindowsInfo(os_info)) .catch((error)=>{
+                        return rejects(error)
+                    });
+                    break;
+            }
+        })
+
     }
 }
 
