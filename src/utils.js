@@ -39,7 +39,6 @@ function buildFileRoot(path) {
 
 function checkApplicationBrowser(applicationName, browserData) {
     if (!applicationName) return null;
-
     const app = applicationName.toLowerCase();
 
     return browserData.browsers.find(
